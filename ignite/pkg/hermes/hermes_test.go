@@ -3,7 +3,7 @@ package hermes_test
 import (
 	"context"
 	"testing"
-	
+
 	"github.com/ignite/cli/ignite/pkg/hermes"
 )
 
