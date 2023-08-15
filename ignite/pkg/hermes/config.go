@@ -11,90 +11,90 @@ import (
 
 type (
 	Config struct {
-		Chains    []Chain   `json:"chains"`
-		Global    Global    `json:"global"`
-		Telemetry Telemetry `json:"telemetry"`
-		Mode      Mode      `json:"mode"`
+		Chains    []Chain   `toml:"chains" json:"chains"`
+		Global    Global    `toml:"global" json:"global"`
+		Telemetry Telemetry `toml:"telemetry" json:"telemetry"`
+		Mode      Mode      `toml:"mode" json:"mode"`
 	}
 
 	Chain struct {
-		Id             string         `json:"id"`
-		RpcAddr        string         `json:"rpc_addr"`
-		GrpcAddr       string         `json:"grpc_addr"`
-		EventSource    EventSource    `json:"event_source"`
-		RpcTimeout     string         `json:"rpc_timeout"`
-		AccountPrefix  string         `json:"account_prefix"`
-		KeyName        string         `json:"key_name"`
-		StorePrefix    string         `json:"store_prefix"`
-		DefaultGas     int            `json:"default_gas"`
-		MaxGas         int            `json:"max_gas"`
-		GasPrice       GasPrice       `json:"gas_price"`
-		GasMultiplier  float64        `json:"gas_multiplier"`
-		MaxMsgNum      int            `json:"max_msg_num"`
-		MaxTxSize      int            `json:"max_tx_size"`
-		ClockDrift     string         `json:"clock_drift"`
-		MaxBlockTime   string         `json:"max_block_time"`
-		TrustingPeriod string         `json:"trusting_period"`
-		TrustThreshold TrustThreshold `json:"trust_threshold"`
-		AddressType    AddressType    `json:"address_type"`
+		Id             string         `toml:"id" json:"id"`
+		RpcAddr        string         `toml:"rpc_addr" json:"rpc_addr"`
+		GrpcAddr       string         `toml:"grpc_addr" json:"grpc_addr"`
+		EventSource    EventSource    `toml:"event_source,inline" json:"event_source"`
+		RpcTimeout     string         `toml:"rpc_timeout" json:"rpc_timeout"`
+		AccountPrefix  string         `toml:"account_prefix" json:"account_prefix"`
+		KeyName        string         `toml:"key_name" json:"key_name"`
+		StorePrefix    string         `toml:"store_prefix" json:"store_prefix"`
+		DefaultGas     int            `toml:"default_gas" json:"default_gas"`
+		MaxGas         int            `toml:"max_gas" json:"max_gas"`
+		GasPrice       GasPrice       `toml:"gas_price,inline" json:"gas_price"`
+		GasMultiplier  float64        `toml:"gas_multiplier" json:"gas_multiplier"`
+		MaxMsgNum      int            `toml:"max_msg_num" json:"max_msg_num"`
+		MaxTxSize      int            `toml:"max_tx_size" json:"max_tx_size"`
+		ClockDrift     string         `toml:"clock_drift" json:"clock_drift"`
+		MaxBlockTime   string         `toml:"max_block_time" json:"max_block_time"`
+		TrustingPeriod string         `toml:"trusting_period" json:"trusting_period"`
+		TrustThreshold TrustThreshold `toml:"trust_threshold,inline" json:"trust_threshold"`
+		AddressType    AddressType    `toml:"address_type,inline" json:"address_type"`
 	}
 
 	EventSource struct {
-		BatchDelay string `json:"batch_delay"`
-		Mode       string `json:"mode"`
-		Url        string `json:"url"`
+		BatchDelay string `toml:"batch_delay" json:"batch_delay"`
+		Mode       string `toml:"mode" json:"mode"`
+		Url        string `toml:"url" json:"url"`
 	}
 
 	GasPrice struct {
-		Denom string  `json:"denom"`
-		Price float64 `json:"price"`
+		Denom string  `toml:"denom" json:"denom"`
+		Price float64 `toml:"price" json:"price"`
 	}
 
 	TrustThreshold struct {
-		Denominator string `json:"denominator"`
-		Numerator   string `json:"numerator"`
+		Denominator string `toml:"denominator" json:"denominator"`
+		Numerator   string `toml:"numerator" json:"numerator"`
 	}
 
 	AddressType struct {
-		Derivation string `json:"derivation"`
+		Derivation string `toml:"derivation" json:"derivation"`
 	}
 
 	Global struct {
-		LogLevel string `json:"log_level"`
+		LogLevel string `toml:"log_level" json:"log_level"`
 	}
 
 	Telemetry struct {
-		Enabled bool   `json:"enabled"`
-		Host    string `json:"host"`
-		Port    int    `json:"port"`
+		Enabled bool   `toml:"enabled" json:"enabled"`
+		Host    string `toml:"host" json:"host"`
+		Port    int    `toml:"port" json:"port"`
 	}
 
 	Mode struct {
-		Channels    Channels    `json:"channels"`
-		Clients     Clients     `json:"clients"`
-		Connections Connections `json:"connections"`
-		Packets     Packets     `json:"packets"`
+		Channels    Channels    `toml:"channels" json:"channels"`
+		Clients     Clients     `toml:"clients" json:"clients"`
+		Connections Connections `toml:"connections" json:"connections"`
+		Packets     Packets     `toml:"packets" json:"packets"`
 	}
 
 	Channels struct {
-		Enabled bool `json:"enabled"`
+		Enabled bool `toml:"enabled" json:"enabled"`
 	}
 
 	Clients struct {
-		Enabled      bool `json:"enabled"`
-		Misbehaviour bool `json:"misbehaviour"`
-		Refresh      bool `json:"refresh"`
+		Enabled      bool `toml:"enabled" json:"enabled"`
+		Misbehaviour bool `toml:"misbehaviour" json:"misbehaviour"`
+		Refresh      bool `toml:"refresh" json:"refresh"`
 	}
 
 	Connections struct {
-		Enabled bool `json:"enabled"`
+		Enabled bool `toml:"enabled" json:"enabled"`
 	}
 
 	Packets struct {
-		ClearInterval  int  `json:"clear_interval"`
-		ClearOnStart   bool `json:"clear_on_start"`
-		Enabled        bool `json:"enabled"`
-		TxConfirmation bool `json:"tx_confirmation"`
+		ClearInterval  int  `toml:"clear_interval" json:"clear_interval"`
+		ClearOnStart   bool `toml:"clear_on_start" json:"clear_on_start"`
+		Enabled        bool `toml:"enabled" json:"enabled"`
+		TxConfirmation bool `toml:"tx_confirmation" json:"tx_confirmation"`
 	}
 
 	// ChainOption configures chain hermes configs.
@@ -220,7 +220,7 @@ func (c *Config) AddChain(chainID, rpcAddr, grpcAddr string, options ...ChainOpt
 		EventSource: EventSource{
 			BatchDelay: "500ms",
 			Mode:       "push",
-			Url:        fmt.Sprintf("ws://%s:%s", rpcUrl.Host, rpcUrl.Port()),
+			Url:        fmt.Sprintf("ws://%s", rpcUrl.Host),
 		},
 		RpcTimeout:    "15s",
 		AccountPrefix: "cosmos",

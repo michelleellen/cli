@@ -2,12 +2,21 @@ package hermes_test
 
 import (
 	"context"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/ignite/cli/ignite/pkg/hermes"
 )
 
 func TestHermes(t *testing.T) {
+	cfgPath, err := hermes.ConfigPath()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.RemoveAll(filepath.Dir(cfgPath)); err != nil {
+		t.Fatal(err)
+	}
 	ctx := context.Background()
 	h, err := hermes.New()
 	if err != nil {
@@ -17,11 +26,11 @@ func TestHermes(t *testing.T) {
 
 	// Create the default config and add chains
 	c := hermes.DefaultConfig()
-	err = c.AddChain("mars-1", "http://0.0.0.0:26649", "http://localhost:9082")
+	err = c.AddChain("mars-1", "http://localhost:26649", "http://localhost:9082")
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = c.AddChain("venus-1", "http://0.0.0.0:26659", "http://localhost:9092")
+	err = c.AddChain("venus-1", "http://localhost:26659", "http://localhost:9092")
 	if err != nil {
 		t.Fatal(err)
 	}

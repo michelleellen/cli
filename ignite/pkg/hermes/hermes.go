@@ -6,6 +6,7 @@ import (
 	"compress/gzip"
 	"context"
 	"fmt"
+	"github.com/ignite/cli/ignite/pkg/cmdrunner/step"
 	"io"
 	"os"
 
@@ -146,7 +147,7 @@ func (h *Hermes) AddMnemonic(ctx context.Context, chainID, mnemonic string) erro
 	if _, err := f.Write([]byte(mnemonic)); err != nil {
 		return err
 	}
-	return h.RunCmd(ctx, cmdKeys, "", WithFlags(
+	return h.RunCmd(ctx, cmdKeys, cmdKeysAdd, WithFlags(
 		Flags{
 			FlagChain:        chainID,
 			FlagMnemonicFile: f.Name(),
@@ -216,5 +217,5 @@ func (h *Hermes) RunCmd(ctx context.Context, command cmdName, subCommand subCmd,
 	}
 
 	// execute the command.
-	return exec.Exec(ctx, cmd)
+	return exec.Exec(ctx, cmd, exec.StepOption(step.Stdout(os.Stdout)))
 }
