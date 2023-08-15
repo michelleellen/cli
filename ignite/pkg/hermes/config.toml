@@ -1,0 +1,69 @@
+[global]
+log_level = 'info'
+
+[mode]
+
+[mode.clients]
+enabled = true
+refresh = true
+misbehaviour = true
+
+[mode.connections]
+enabled = true
+
+[mode.channels]
+enabled = true
+
+[mode.packets]
+enabled = true
+clear_interval = 100
+clear_on_start = true
+tx_confirmation = true
+
+[telemetry]
+enabled = false
+host = '127.0.0.1'
+port = 3001
+
+[[chains]]
+id = 'mars-1'
+rpc_addr = 'http://0.0.0.0:26649'
+grpc_addr = 'http://localhost:9082'
+event_source = { mode = 'push', url = 'ws://localhost:26649/websocket', batch_delay = '500ms' }
+rpc_timeout = '15s'
+account_prefix = 'cosmos'
+key_name = 'wallet'
+store_prefix = 'ibc'
+default_gas = 100000
+max_gas = 10000000
+gas_price = { price = 0.01, denom = 'stake' }
+gas_multiplier = 1.1
+max_msg_num = 30
+max_tx_size = 2097152
+clock_drift = '5s'
+max_block_time = '10s'
+trusting_period = '14days'
+trust_threshold = { numerator = '1', denominator = '3' }
+address_type = { derivation = 'cosmos' }
+
+[[chains]]
+id = 'venus-1'
+rpc_addr = 'http://localhost:26659'
+grpc_addr = 'http://localhost:9092'
+event_source = { mode = 'push', url = 'ws://localhost:26659/websocket', batch_delay = '500ms' }
+rpc_timeout = '15s'
+account_prefix = 'cosmos'
+key_name = 'wallet'
+store_prefix = 'ibc'
+default_gas = 100000
+max_gas = 10000000
+gas_price = { price = 0.01, denom = 'stake' }
+gas_multiplier = 1.1
+max_msg_num = 30
+max_tx_size = 2097152
+clock_drift = '5s'
+max_block_time = '10s'
+trusting_period = '14days'
+trust_threshold = { numerator = '1', denominator = '3' }
+address_type = { derivation = 'cosmos' }
+

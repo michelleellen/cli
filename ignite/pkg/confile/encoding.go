@@ -5,7 +5,7 @@ import (
 	"io"
 
 	"github.com/goccy/go-yaml"
-	"github.com/pelletier/go-toml"
+	"github.com/pelletier/go-toml/v2"
 )
 
 // EncodingCreator defines a constructor to create an EncodingCreator from

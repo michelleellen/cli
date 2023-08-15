@@ -7,14 +7,20 @@ import (
 	"github.com/ignite/cli/ignite/pkg/hermes"
 )
 
-// hermes create client --host-chain ibc-1 --reference-chain ibc-0
-// hermes create client --host-chain ibc-0 --reference-chain ibc-1
-// hermes create connection --a-chain ibc-0 --a-client 07-tendermint-0 --b-client 07-tendermint-0
-// hermes create channel --a-chain ibc-0 --a-connection connection-0 --a-port transfer --b-port transfer
-// hermes query channels --show-counterparty --chain ibc-0
+// rm -rf ~/.hermes ~/.ignite ~/.venus ~/.mars
+// mkdir -p /Users/danilopantani/.hermes/
+// cp /Users/danilopantani/Desktop/go/src/github.com/ignite/cli/ignite/pkg/hermes/config.toml /Users/danilopantani/.hermes/config.toml
+// echo "middle useful federal remove kind found state weekend hammer disagree summer nephew caution boost expect" > mnemonic.txt
+// hermes keys add --chain mars-1 --mnemonic-file mnemonic.txt
+// hermes keys add --chain venus-1 --mnemonic-file mnemonic.txt
+// hermes create client --host-chain mars-1 --reference-chain venus-1
+// hermes create client --host-chain venus-1 --reference-chain mars-1
+// hermes create connection --a-chain mars-1 --a-client 07-tendermint-0 --b-client 07-tendermint-0
+// hermes create channel --a-chain mars-1 --a-connection connection-0 --a-port dex --b-port dex
+// hermes query channels --show-counterparty --chain mars-1
 // hermes start
-// hermes tx ft-transfer --timeout-seconds 1000 --dst-chain ibc-1 --src-chain ibc-0 --src-port transfer --src-channel channel-0 --amount 100000
-// hermes tx ft-transfer --timeout-seconds 10000 --denom ibc/C1840BD16FCFA8F421DAA0DAAB08B9C323FC7685D0D7951DC37B3F9ECB08A199 --dst-chain ibc-0 --src-chain ibc-1 --src-port transfer --src-channel channel-0 --amount 100000
+// hermes tx ft-transfer --timeout-seconds 1000 --dst-chain venus-1 --src-chain mars-1 --src-port transfer --src-channel channel-0 --amount 100000
+// hermes tx ft-transfer --timeout-seconds 10000 --denom ibc/C1840BD16FCFA8F421DAA0DAAB08B9C323FC7685D0D7951DC37B3F9ECB08A199 --dst-chain mars-1 --src-chain venus-1 --src-port transfer --src-channel channel-0 --amount 100000
 
 // ignite relayer configure -a
 // --source-rpc "http://0.0.0.0:26657"
