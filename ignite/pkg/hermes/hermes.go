@@ -28,40 +28,45 @@ const (
 	FlagPortB            = "b-port"
 	FlagShowCounterparty = "show-counterparty"
 	FlagChain            = "chain"
+	FlagMnemonicFile     = "mnemonic-file"
 )
 
 const (
 	// CommandCreate is the Hermes create command.
-	CommandCreate CommandName = "create"
+	cmdCreate cmdName = "create"
 
 	// CommandQuery is the Hermes query command.
-	CommandQuery CommandName = "query"
+	cmdQuery cmdName = "query"
+
+	// CommandKeys is the Hermes keys command.
+	cmdKeys cmdName = "keys"
 
 	// CommandStart is the Hermes start command.
-	CommandStart CommandName = "start"
+	cmdStart cmdName = "start"
 
-	// CommandClient is the Hermes client command.
-	CommandClient CreateCommand = "client"
+	// CommandClient is the Hermes create client command.
+	cmdClient subCmd = "client"
 
-	// CommandConnection is the Hermes connection command.
-	CommandConnection CreateCommand = "connection"
+	// CommandConnection is the Hermes create connection command.
+	cmdConnection subCmd = "connection"
 
-	// CommandChannel is the Hermes channel command.
-	CommandChannel CreateCommand = "channel"
+	// CommandChannel is the Hermes create channel command.
+	cmdChannel subCmd = "channel"
 
-	// CommandChannels  is the Hermes channels command.
-	CommandChannels QueryCommand = "channels"
+	// CommandChannels  is the Hermes query channels command.
+	cmdChannels subCmd = "channels"
+
+	// CommandKeysAdd is the Hermes keys add command.
+	cmdKeysAdd subCmd = "add"
 )
 
 type (
 	// Flags represents the Hermes run flags.
 	Flags map[string]interface{}
-	// CommandName represents a high level command under Hermes.
-	CommandName string
-	// QueryCommand represents the query command under Hermes.
-	QueryCommand string
-	// CreateCommand represents the create command under Hermes.
-	CreateCommand string
+	// cmdName represents a high level command under Hermes.
+	cmdName string
+	// SubCommand represents the sub command under Hermes.
+	subCmd string
 
 	Hermes struct {
 		path    string
@@ -123,19 +128,76 @@ func (h *Hermes) Cleanup() error {
 	return os.RemoveAll(h.path)
 }
 
-func (h *Hermes) Create(ctx context.Context, cmd CreateCommand, options ...Option) error {
-	return h.RunCmd(ctx, CommandCreate, string(cmd), options...)
+func (h *Hermes) AddKey(ctx context.Context, chainID, keyfile string) error {
+	return h.RunCmd(ctx, cmdKeys, "", WithFlags(
+		Flags{
+			FlagChain:        chainID,
+			FlagMnemonicFile: keyfile,
+		},
+	))
 }
 
-func (h *Hermes) Query(ctx context.Context, cmd QueryCommand, options ...Option) error {
-	return h.RunCmd(ctx, CommandQuery, string(cmd), options...)
+func (h *Hermes) AddMnemonic(ctx context.Context, chainID, mnemonic string) error {
+	f, err := os.CreateTemp("", "hermes-key")
+	if err != nil {
+		return err
+	}
+	defer os.Remove(f.Name())
+	if _, err := f.Write([]byte(mnemonic)); err != nil {
+		return err
+	}
+	return h.RunCmd(ctx, cmdKeys, "", WithFlags(
+		Flags{
+			FlagChain:        chainID,
+			FlagMnemonicFile: f.Name(),
+		},
+	))
+}
+
+func (h *Hermes) CreateClient(ctx context.Context, hostChain, referenceChain string) error {
+	return h.RunCmd(ctx, cmdCreate, cmdClient, WithFlags(
+		Flags{
+			FlagHostChain:      hostChain,
+			FlagReferenceChain: referenceChain,
+		},
+	))
+}
+
+func (h *Hermes) CreateConnection(ctx context.Context, chainA, clientA, clientB string) error {
+	return h.RunCmd(ctx, cmdCreate, cmdConnection, WithFlags(
+		Flags{
+			FlagChainA:  chainA,
+			FlagClientA: clientA,
+			FlagClientB: clientB,
+		}))
+}
+
+func (h *Hermes) CreateChannel(ctx context.Context, chainA, connA, portA, portB string) error {
+	return h.RunCmd(ctx, cmdCreate, cmdChannel, WithFlags(
+		Flags{
+			FlagChainA:      chainA,
+			FlagConnectionA: connA,
+			FlagPortA:       portA,
+			FlagPortB:       portB,
+		},
+	))
+}
+
+func (h *Hermes) QueryChannels(ctx context.Context, showCounterparty bool, chain string) error {
+	flags := Flags{
+		FlagChain: chain,
+	}
+	if showCounterparty {
+		flags[FlagShowCounterparty] = true
+	}
+	return h.RunCmd(ctx, cmdQuery, cmdChannels)
 }
 
 func (h *Hermes) Start(ctx context.Context, options ...Option) error {
-	return h.RunCmd(ctx, CommandStart, "", options...)
+	return h.RunCmd(ctx, cmdStart, "", options...)
 }
 
-func (h *Hermes) RunCmd(ctx context.Context, command CommandName, subCommand string, options ...Option) error {
+func (h *Hermes) RunCmd(ctx context.Context, command cmdName, subCommand subCmd, options ...Option) error {
 	c := configs{}
 	for _, o := range options {
 		o(&c)
@@ -143,7 +205,7 @@ func (h *Hermes) RunCmd(ctx context.Context, command CommandName, subCommand str
 
 	cmd := []string{h.path, string(command)}
 	if subCommand != "" {
-		cmd = append(cmd, subCommand)
+		cmd = append(cmd, string(subCommand))
 	}
 	for flag, value := range c.flags {
 		if v, ok := value.(bool); ok && v {
