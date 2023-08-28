@@ -2,6 +2,7 @@ package hermes_test
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -39,7 +40,7 @@ func TestHermes(t *testing.T) {
 	}
 
 	// Add hermes keys
-	err = h.AddMnemonic(
+	result, err := h.AddMnemonic(
 		ctx,
 		"mars-1",
 		"letter column benefit acoustic evidence false trim cave jump pluck awesome lion",
@@ -47,7 +48,9 @@ func TestHermes(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = h.AddMnemonic(
+	fmt.Println(result)
+
+	result, err = h.AddMnemonic(
 		ctx,
 		"venus-1",
 		"jeans payment lock client result enemy bullet rug crush deny month salad",
@@ -55,36 +58,45 @@ func TestHermes(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	fmt.Println(result)
 
 	// create clients
-	err = h.CreateClient(ctx, "mars-1", "venus-1")
+	result, err = h.CreateClient(ctx, "mars-1", "venus-1")
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = h.CreateClient(ctx, "venus-1", "mars-1")
+	fmt.Println(result)
+
+	result, err = h.CreateClient(ctx, "venus-1", "mars-1")
 	if err != nil {
 		t.Fatal(err)
 	}
+	fmt.Println(result)
 
 	// create connection
-	err = h.CreateConnection(ctx, "mars-1", "07-tendermint-0", "07-tendermint-0")
+	result, err = h.CreateConnection(ctx, "mars-1", "07-tendermint-0", "07-tendermint-0")
 	if err != nil {
 		t.Fatal(err)
 	}
+	fmt.Println(result)
 
 	// create and query channel
-	err = h.CreateChannel(ctx, "mars-1", "connection-0", "transfer", "transfer")
+	result, err = h.CreateChannel(ctx, "mars-1", "connection-0", "transfer", "transfer")
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = h.QueryChannels(ctx, true, "mars-1")
+	fmt.Println(result)
+
+	result, err = h.QueryChannels(ctx, true, "mars-1")
 	if err != nil {
 		t.Fatal(err)
 	}
+	fmt.Println(result)
 
 	// start hermes
-	err = h.Start(ctx)
+	result, err = h.Start(ctx)
 	if err != nil {
 		t.Fatal(err)
 	}
+	fmt.Println(result)
 }

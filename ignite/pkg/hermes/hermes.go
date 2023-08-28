@@ -129,7 +129,7 @@ func (h *Hermes) Cleanup() error {
 	return os.RemoveAll(h.path)
 }
 
-func (h *Hermes) AddKey(ctx context.Context, chainID, keyfile string) error {
+func (h *Hermes) AddKey(ctx context.Context, chainID, keyfile string) ([]byte, error) {
 	return h.RunCmd(ctx, cmdKeys, "", WithFlags(
 		Flags{
 			FlagChain:        chainID,
@@ -138,14 +138,14 @@ func (h *Hermes) AddKey(ctx context.Context, chainID, keyfile string) error {
 	))
 }
 
-func (h *Hermes) AddMnemonic(ctx context.Context, chainID, mnemonic string) error {
+func (h *Hermes) AddMnemonic(ctx context.Context, chainID, mnemonic string) ([]byte, error) {
 	f, err := os.CreateTemp("", "hermes-key")
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer os.Remove(f.Name())
 	if _, err := f.Write([]byte(mnemonic)); err != nil {
-		return err
+		return nil, err
 	}
 	return h.RunCmd(ctx, cmdKeys, cmdKeysAdd, WithFlags(
 		Flags{
@@ -155,7 +155,7 @@ func (h *Hermes) AddMnemonic(ctx context.Context, chainID, mnemonic string) erro
 	))
 }
 
-func (h *Hermes) CreateClient(ctx context.Context, hostChain, referenceChain string) error {
+func (h *Hermes) CreateClient(ctx context.Context, hostChain, referenceChain string) ([]byte, error) {
 	return h.RunCmd(ctx, cmdCreate, cmdClient, WithFlags(
 		Flags{
 			FlagHostChain:      hostChain,
@@ -164,7 +164,7 @@ func (h *Hermes) CreateClient(ctx context.Context, hostChain, referenceChain str
 	))
 }
 
-func (h *Hermes) CreateConnection(ctx context.Context, chainA, clientA, clientB string) error {
+func (h *Hermes) CreateConnection(ctx context.Context, chainA, clientA, clientB string) ([]byte, error) {
 	return h.RunCmd(ctx, cmdCreate, cmdConnection, WithFlags(
 		Flags{
 			FlagChainA:  chainA,
@@ -173,7 +173,7 @@ func (h *Hermes) CreateConnection(ctx context.Context, chainA, clientA, clientB 
 		}))
 }
 
-func (h *Hermes) CreateChannel(ctx context.Context, chainA, connA, portA, portB string) error {
+func (h *Hermes) CreateChannel(ctx context.Context, chainA, connA, portA, portB string) ([]byte, error) {
 	return h.RunCmd(ctx, cmdCreate, cmdChannel, WithFlags(
 		Flags{
 			FlagChainA:      chainA,
@@ -184,21 +184,21 @@ func (h *Hermes) CreateChannel(ctx context.Context, chainA, connA, portA, portB 
 	))
 }
 
-func (h *Hermes) QueryChannels(ctx context.Context, showCounterparty bool, chain string) error {
+func (h *Hermes) QueryChannels(ctx context.Context, showCounterparty bool, chain string) ([]byte, error) {
 	flags := Flags{
 		FlagChain: chain,
 	}
 	if showCounterparty {
 		flags[FlagShowCounterparty] = true
 	}
-	return h.RunCmd(ctx, cmdQuery, cmdChannels)
+	return h.RunCmd(ctx, cmdQuery, cmdChannels, WithFlags(flags))
 }
 
-func (h *Hermes) Start(ctx context.Context, options ...Option) error {
+func (h *Hermes) Start(ctx context.Context, options ...Option) ([]byte, error) {
 	return h.RunCmd(ctx, cmdStart, "", options...)
 }
 
-func (h *Hermes) RunCmd(ctx context.Context, command cmdName, subCommand subCmd, options ...Option) error {
+func (h *Hermes) RunCmd(ctx context.Context, command cmdName, subCommand subCmd, options ...Option) ([]byte, error) {
 	c := configs{}
 	for _, o := range options {
 		o(&c)
@@ -217,5 +217,6 @@ func (h *Hermes) RunCmd(ctx context.Context, command cmdName, subCommand subCmd,
 	}
 
 	// execute the command.
-	return exec.Exec(ctx, cmd, exec.StepOption(step.Stdout(os.Stdout)))
+	buf := bytes.Buffer{}
+	return buf.Bytes(), exec.Exec(ctx, cmd, exec.StepOption(step.Stdout(&buf)))
 }
