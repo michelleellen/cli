@@ -16,6 +16,7 @@
 - [#3581](https://github.com/ignite/cli/pull/3581) Bump cometbft and cometbft-db in the template
 - [#3559](https://github.com/ignite/cli/pull/3559) Bump network plugin version to `v0.1.1`
 - [#3522](https://github.com/ignite/cli/pull/3522) Remove indentation from `chain serve` output
+- [#3601](https://github.com/ignite/cli/pull/3601) Update ts-relayer version to `0.10.0`
 
 ### Fixes
 
@@ -23,6 +24,7 @@
 - [#3598](https://github.com/ignite/cli/pull/3598) Fix consensus param keeper constructor key in `app.go`
 - [#3610](https://github.com/ignite/cli/pull/3610) Fix overflow issue of cosmos faucet in `pkg/cosmosfaucet/transfer.go` and `pkg/cosmosfaucet/cosmosfaucet.go`
 - [#3618](https://github.com/ignite/cli/pull/3618) Fix TS client generation import path issue
+- [#3631](https://github.com/ignite/cli/pull/3631) Fix unnecessary vue import in hooks/composables template
 
 ## [`v0.27.0`](https://github.com/ignite/cli/releases/tag/v0.27.0)
 
