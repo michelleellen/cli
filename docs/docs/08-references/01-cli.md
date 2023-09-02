@@ -381,6 +381,7 @@ ignite chain build [flags]
 **Options**
 
 ```
+      --build.tags strings        parameters to build the chain binary (default [app_v1])
       --check-dependencies        verify that cached dependencies have not been modified since they were downloaded
       --clear-cache               clear the build cache (advanced)
       --debug                     build a debug binary
@@ -568,6 +569,7 @@ ignite chain init [flags]
 **Options**
 
 ```
+      --build.tags strings   parameters to build the chain binary (default [app_v1])
       --check-dependencies   verify that cached dependencies have not been modified since they were downloaded
       --clear-cache          clear the build cache (advanced)
       --debug                build a debug binary
@@ -636,6 +638,7 @@ ignite chain serve [flags]
 **Options**
 
 ```
+      --build.tags strings   parameters to build the chain binary (default [app_v1])
       --check-dependencies   verify that cached dependencies have not been modified since they were downloaded
       --clear-cache          clear the build cache (advanced)
   -f, --force-reset          force reset of the app state on start and every source change
@@ -858,7 +861,7 @@ to enable it.  You can execute the following once:
 
 To load completions in your current shell session:
 
-	source <(ignite completion zsh); compdef _ignite ignite
+	source <(ignite completion zsh)
 
 To load completions for every new session, execute once:
 
@@ -938,6 +941,7 @@ meant to be edited by hand.
 * [ignite generate hooks](#ignite-generate-hooks)	 - TypeScript frontend client and React hooks
 * [ignite generate openapi](#ignite-generate-openapi)	 - OpenAPI spec for your chain
 * [ignite generate proto-go](#ignite-generate-proto-go)	 - Compile protocol buffer files to Go source code required by Cosmos SDK
+* [ignite generate proto-pulsar](#ignite-generate-proto-pulsar)	 - Compile protocol buffer files to Go pulsar source code required by Cosmos SDK
 * [ignite generate ts-client](#ignite-generate-ts-client)	 - TypeScript frontend client
 * [ignite generate vuex](#ignite-generate-vuex)	 - *DEPRECATED* TypeScript frontend client and Vuex stores
 
@@ -1037,6 +1041,33 @@ ignite generate proto-go [flags]
 
 ```
   -h, --help   help for proto-go
+  -y, --yes    answers interactive yes/no questions with yes
+```
+
+**Options inherited from parent commands**
+
+```
+      --clear-cache   clear the build cache (advanced)
+  -p, --path string   path of the app (default ".")
+```
+
+**SEE ALSO**
+
+* [ignite generate](#ignite-generate)	 - Generate clients, API docs from source code
+
+
+## ignite generate proto-pulsar
+
+Compile protocol buffer files to Go pulsar source code required by Cosmos SDK
+
+```
+ignite generate proto-pulsar [flags]
+```
+
+**Options**
+
+```
+  -h, --help   help for proto-pulsar
   -y, --yes    answers interactive yes/no questions with yes
 ```
 
@@ -1199,10 +1230,7 @@ validators launch their nodes, a blockchain will be live.
 * [ignite](#ignite)	 - Ignite CLI offers everything you need to scaffold, test, build, and launch your blockchain
 * [ignite network chain](#ignite-network-chain)	 - Publish a chain, join as a validator and prepare node for launch
 * [ignite network coordinator](#ignite-network-coordinator)	 - Show and update a coordinator profile
-* [ignite network profile](#ignite-network-profile)	 - Show the address profile info
-* [ignite network project](#ignite-network-project)	 - Handle projects
 * [ignite network request](#ignite-network-request)	 - Create, show, reject and approve requests
-* [ignite network reward](#ignite-network-reward)	 - Manage network rewards
 * [ignite network tool](#ignite-network-tool)	 - Commands to run subsidiary tools
 * [ignite network validator](#ignite-network-validator)	 - Show and update a validator profile
 * [ignite network version](#ignite-network-version)	 - Version of the plugin
@@ -1994,242 +2022,6 @@ ignite network coordinator show [address] [flags]
 * [ignite network coordinator](#ignite-network-coordinator)	 - Show and update a coordinator profile
 
 
-## ignite network profile
-
-Show the address profile info
-
-```
-ignite network profile [project-id] [flags]
-```
-
-**Options**
-
-```
-      --from string              account name to use for sending transactions to SPN (default "default")
-  -h, --help                     help for profile
-      --home string              home directory used for blockchains
-      --keyring-backend string   keyring backend to store your account keys (default "test")
-```
-
-**Options inherited from parent commands**
-
-```
-      --local                       Use local SPN network
-      --nightly                     Use nightly SPN network
-      --spn-faucet-address string   SPN faucet address (default "https://faucet.devnet.ignite.com:443")
-      --spn-node-address string     SPN node address (default "https://rpc.devnet.ignite.com:443")
-```
-
-**SEE ALSO**
-
-* [ignite network](#ignite-network)	 - Launch a blockchain in production
-
-
-## ignite network project
-
-Handle projects
-
-**Options**
-
-```
-  -h, --help   help for project
-```
-
-**Options inherited from parent commands**
-
-```
-      --local                       Use local SPN network
-      --nightly                     Use nightly SPN network
-      --spn-faucet-address string   SPN faucet address (default "https://faucet.devnet.ignite.com:443")
-      --spn-node-address string     SPN node address (default "https://rpc.devnet.ignite.com:443")
-```
-
-**SEE ALSO**
-
-* [ignite network](#ignite-network)	 - Launch a blockchain in production
-* [ignite network project account](#ignite-network-project-account)	 - Handle project accounts
-* [ignite network project create](#ignite-network-project-create)	 - Create a project
-* [ignite network project list](#ignite-network-project-list)	 - List published projects
-* [ignite network project show](#ignite-network-project-show)	 - Show published project
-* [ignite network project update](#ignite-network-project-update)	 - Update details fo the project of the project
-
-
-## ignite network project account
-
-Handle project accounts
-
-**Options**
-
-```
-  -h, --help   help for account
-```
-
-**Options inherited from parent commands**
-
-```
-      --local                       Use local SPN network
-      --nightly                     Use nightly SPN network
-      --spn-faucet-address string   SPN faucet address (default "https://faucet.devnet.ignite.com:443")
-      --spn-node-address string     SPN node address (default "https://rpc.devnet.ignite.com:443")
-```
-
-**SEE ALSO**
-
-* [ignite network project](#ignite-network-project)	 - Handle projects
-* [ignite network project account list](#ignite-network-project-account-list)	 - Show all mainnet and mainnet vesting of the project
-
-
-## ignite network project account list
-
-Show all mainnet and mainnet vesting of the project
-
-```
-ignite network project account list [project-id] [flags]
-```
-
-**Options**
-
-```
-  -h, --help   help for list
-```
-
-**Options inherited from parent commands**
-
-```
-      --local                       Use local SPN network
-      --nightly                     Use nightly SPN network
-      --spn-faucet-address string   SPN faucet address (default "https://faucet.devnet.ignite.com:443")
-      --spn-node-address string     SPN node address (default "https://rpc.devnet.ignite.com:443")
-```
-
-**SEE ALSO**
-
-* [ignite network project account](#ignite-network-project-account)	 - Handle project accounts
-
-
-## ignite network project create
-
-Create a project
-
-```
-ignite network project create [name] [total-supply] [flags]
-```
-
-**Options**
-
-```
-      --from string              account name to use for sending transactions to SPN (default "default")
-  -h, --help                     help for create
-      --home string              home directory used for blockchains
-      --keyring-backend string   keyring backend to store your account keys (default "test")
-      --keyring-dir string       accounts keyring directory (default "/home/runner/.ignite/accounts")
-      --metadata string          Add a metadata to the chain
-```
-
-**Options inherited from parent commands**
-
-```
-      --local                       Use local SPN network
-      --nightly                     Use nightly SPN network
-      --spn-faucet-address string   SPN faucet address (default "https://faucet.devnet.ignite.com:443")
-      --spn-node-address string     SPN node address (default "https://rpc.devnet.ignite.com:443")
-```
-
-**SEE ALSO**
-
-* [ignite network project](#ignite-network-project)	 - Handle projects
-
-
-## ignite network project list
-
-List published projects
-
-```
-ignite network project list [flags]
-```
-
-**Options**
-
-```
-  -h, --help   help for list
-```
-
-**Options inherited from parent commands**
-
-```
-      --local                       Use local SPN network
-      --nightly                     Use nightly SPN network
-      --spn-faucet-address string   SPN faucet address (default "https://faucet.devnet.ignite.com:443")
-      --spn-node-address string     SPN node address (default "https://rpc.devnet.ignite.com:443")
-```
-
-**SEE ALSO**
-
-* [ignite network project](#ignite-network-project)	 - Handle projects
-
-
-## ignite network project show
-
-Show published project
-
-```
-ignite network project show [project-id] [flags]
-```
-
-**Options**
-
-```
-  -h, --help   help for show
-```
-
-**Options inherited from parent commands**
-
-```
-      --local                       Use local SPN network
-      --nightly                     Use nightly SPN network
-      --spn-faucet-address string   SPN faucet address (default "https://faucet.devnet.ignite.com:443")
-      --spn-node-address string     SPN node address (default "https://rpc.devnet.ignite.com:443")
-```
-
-**SEE ALSO**
-
-* [ignite network project](#ignite-network-project)	 - Handle projects
-
-
-## ignite network project update
-
-Update details fo the project of the project
-
-```
-ignite network project update [project-id] [flags]
-```
-
-**Options**
-
-```
-      --from string              account name to use for sending transactions to SPN (default "default")
-  -h, --help                     help for update
-      --keyring-backend string   keyring backend to store your account keys (default "test")
-      --keyring-dir string       accounts keyring directory (default "/home/runner/.ignite/accounts")
-      --metadata string          update the project metadata
-      --name string              update the project name
-      --total-supply string      update the total of the mainnet of a project
-```
-
-**Options inherited from parent commands**
-
-```
-      --local                       Use local SPN network
-      --nightly                     Use nightly SPN network
-      --spn-faucet-address string   SPN faucet address (default "https://faucet.devnet.ignite.com:443")
-      --spn-node-address string     SPN node address (default "https://rpc.devnet.ignite.com:443")
-```
-
-**SEE ALSO**
-
-* [ignite network project](#ignite-network-project)	 - Handle projects
-
-
 ## ignite network request
 
 Create, show, reject and approve requests
@@ -2621,102 +2413,6 @@ ignite network request verify [launch-id] [number<,...>] [flags]
 * [ignite network request](#ignite-network-request)	 - Create, show, reject and approve requests
 
 
-## ignite network reward
-
-Manage network rewards
-
-**Options**
-
-```
-  -h, --help   help for reward
-```
-
-**Options inherited from parent commands**
-
-```
-      --local                       Use local SPN network
-      --nightly                     Use nightly SPN network
-      --spn-faucet-address string   SPN faucet address (default "https://faucet.devnet.ignite.com:443")
-      --spn-node-address string     SPN node address (default "https://rpc.devnet.ignite.com:443")
-```
-
-**SEE ALSO**
-
-* [ignite network](#ignite-network)	 - Launch a blockchain in production
-* [ignite network reward release](#ignite-network-reward-release)	 - Connect the monitoring modules of launched chains with SPN
-* [ignite network reward set](#ignite-network-reward-set)	 - set a network chain reward
-
-
-## ignite network reward release
-
-Connect the monitoring modules of launched chains with SPN
-
-```
-ignite network reward release [launch-id] [chain-rpc] [flags]
-```
-
-**Options**
-
-```
-      --create-client-only        only create the network client id
-      --from string               account name to use for sending transactions to SPN (default "default")
-  -h, --help                      help for release
-      --keyring-backend string    keyring backend to store your account keys (default "test")
-      --spn-gaslimit int          gas limit used for transactions on SPN (default 400000)
-      --spn-gasprice string       gas price used for transactions on SPN (default "0.0000025uspn")
-      --testnet-account string    testnet chain account (default "default")
-      --testnet-faucet string     faucet address of the testnet chain
-      --testnet-gaslimit int      gas limit used for transactions on testnet chain (default 400000)
-      --testnet-gasprice string   gas price used for transactions on testnet chain (default "0.0000025stake")
-      --testnet-prefix string     address prefix of the testnet chain (default "cosmos")
-```
-
-**Options inherited from parent commands**
-
-```
-      --local                       Use local SPN network
-      --nightly                     Use nightly SPN network
-      --spn-faucet-address string   SPN faucet address (default "https://faucet.devnet.ignite.com:443")
-      --spn-node-address string     SPN node address (default "https://rpc.devnet.ignite.com:443")
-```
-
-**SEE ALSO**
-
-* [ignite network reward](#ignite-network-reward)	 - Manage network rewards
-
-
-## ignite network reward set
-
-set a network chain reward
-
-```
-ignite network reward set [launch-id] [last-reward-height] [coins] [flags]
-```
-
-**Options**
-
-```
-      --from string              account name to use for sending transactions to SPN (default "default")
-  -h, --help                     help for set
-      --home string              home directory used for blockchains
-      --keyring-backend string   keyring backend to store your account keys (default "test")
-      --keyring-dir string       accounts keyring directory (default "/home/runner/.ignite/accounts")
-```
-
-**Options inherited from parent commands**
-
-```
-      --local                       Use local SPN network
-      --nightly                     Use nightly SPN network
-      --spn-faucet-address string   SPN faucet address (default "https://faucet.devnet.ignite.com:443")
-      --spn-node-address string     SPN node address (default "https://rpc.devnet.ignite.com:443")
-```
-
-**SEE ALSO**
-
-* [ignite network reward](#ignite-network-reward)	 - Manage network rewards
-
-
 ## ignite network tool
 
 Commands to run subsidiary tools
@@ -3046,6 +2742,7 @@ Transactions subcommands
       --address-prefix string    account address prefix (default "cosmos")
       --fees string              fees to pay along with transaction; eg: 10uatom
       --gas string               gas limit to set per-transaction; set to "auto" to calculate sufficient gas automatically (default "auto")
+      --gas-adjustment float     gas adjustment to set per-transaction
       --gas-prices string        gas prices in decimal format to determine the transaction fee (e.g. 0.1uatom)
       --generate-only            build an unsigned transaction and write it to STDOUT
   -h, --help                     help for tx
@@ -3082,6 +2779,7 @@ Bank transaction subcommands
       --address-prefix string    account address prefix (default "cosmos")
       --fees string              fees to pay along with transaction; eg: 10uatom
       --gas string               gas limit to set per-transaction; set to "auto" to calculate sufficient gas automatically (default "auto")
+      --gas-adjustment float     gas adjustment to set per-transaction
       --gas-prices string        gas prices in decimal format to determine the transaction fee (e.g. 0.1uatom)
       --generate-only            build an unsigned transaction and write it to STDOUT
       --home string              directory where the blockchain node is initialized
@@ -3116,6 +2814,7 @@ ignite node tx bank send [from_account_or_address] [to_account_or_address] [amou
       --address-prefix string    account address prefix (default "cosmos")
       --fees string              fees to pay along with transaction; eg: 10uatom
       --gas string               gas limit to set per-transaction; set to "auto" to calculate sufficient gas automatically (default "auto")
+      --gas-adjustment float     gas adjustment to set per-transaction
       --gas-prices string        gas prices in decimal format to determine the transaction fee (e.g. 0.1uatom)
       --generate-only            build an unsigned transaction and write it to STDOUT
       --home string              directory where the blockchain node is initialized
@@ -3512,6 +3211,7 @@ ignite scaffold chain [name] [flags]
       --clear-cache             clear the build cache (advanced)
   -h, --help                    help for chain
       --no-module               create a project without a default module
+      --params strings          add default module parameters
   -p, --path string             create a project in a specific path
       --skip-git                skip Git repository initialization
 ```
@@ -3657,7 +3357,7 @@ dictionary) in the blockchain state.
 
 The "map" command is very similar to "ignite scaffold list" with the main
 difference in how values are indexed. With "list" values are indexed by an
-incrementing integer, whereas "list" values are indexed by a user-provided value
+incrementing integer, whereas "map" values are indexed by a user-provided value
 (or multiple values).
 
 Let's use the same blog post example:
@@ -4043,7 +3743,6 @@ Tools for advanced users
 * [ignite](#ignite)	 - Ignite CLI offers everything you need to scaffold, test, build, and launch your blockchain
 * [ignite tools ibc-relayer](#ignite-tools-ibc-relayer)	 - TypeScript implementation of an IBC relayer
 * [ignite tools ibc-setup](#ignite-tools-ibc-setup)	 - Collection of commands to quickly setup a relayer
-* [ignite tools protoc](#ignite-tools-protoc)	 - Execute the protoc command
 
 
 ## ignite tools ibc-relayer
@@ -4090,35 +3789,6 @@ ignite tools ibc-setup -- init --src relayer_test_1 --dest relayer_test_2
 
 ```
   -h, --help   help for ibc-setup
-```
-
-**SEE ALSO**
-
-* [ignite tools](#ignite-tools)	 - Tools for advanced users
-
-
-## ignite tools protoc
-
-Execute the protoc command
-
-**Synopsis**
-
-The protoc command. You don't need to setup the global protoc include folder with -I, it's automatically handled
-
-```
-ignite tools protoc [--] [...] [flags]
-```
-
-**Examples**
-
-```
-ignite tools protoc -- --version
-```
-
-**Options**
-
-```
-  -h, --help   help for protoc
 ```
 
 **SEE ALSO**
